@@ -93,8 +93,8 @@ BEGIN
             VALUE "FileDescription", "riddle_quest" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "riddle_quest" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.werewolfstudiios. All rights reserved." "\0"
-            VALUE "OriginalFilename", "riddle_quest.exe" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 Werewolf Studiios All rights reserved." "\0"
+            VALUE "OriginalFilename", "RiddleQuest.exe" "\0"
             VALUE "ProductName", "riddle_quest" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END

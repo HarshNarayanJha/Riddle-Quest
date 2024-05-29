@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = riddle_quest
+PRODUCT_NAME = Riddle Quest App
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.werewolfstudiios.riddleQuest
+PRODUCT_BUNDLE_IDENTIFIER = com.werewolfstudiios.riddleQuestApp
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2024 com.werewolfstudiios. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2024 Werewolf Studiios All rights reserved.
