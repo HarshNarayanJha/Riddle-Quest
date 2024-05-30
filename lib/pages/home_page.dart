@@ -28,17 +28,20 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: const RiddleQuestAppBar(),
       body: Responsive(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomButton(
-                onTap: () => widget.toCreateRoom(context),
-                text: "Create Room"),
-            const SizedBox(height: 20),
-            CustomButton(
-                onTap: () => widget.toJoinRoom(context),
-                text: "Join Room"),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomButton(
+                  onTap: () => widget.toCreateRoom(context),
+                  text: "Create Room"),
+              const SizedBox(height: 20),
+              CustomButton(
+                  onTap: () => widget.toJoinRoom(context),
+                  text: "Join Room"),
+            ],
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:riddle_quest_app/resources/socket_helper.dart';
 import 'package:riddle_quest_app/widgets/custom_button.dart';
 import 'package:riddle_quest_app/widgets/custom_text_field.dart';
+import 'package:riddle_quest_app/widgets/hero_text.dart';
 import 'package:riddle_quest_app/widgets/responsive.dart';
 import 'package:riddle_quest_app/widgets/riddle_quest_app_bar.dart';
 
@@ -28,6 +29,11 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
   void dispose() {
     super.dispose();
     _nameController.dispose();
+
+    // UnListeners
+
+    _socketHelper.removeRoomCreatedListener(context);
+    _socketHelper.removeErrorOccurredListener(context);
   }
 
   @override
@@ -41,24 +47,20 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
           margin: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                "Create Room",
-                style: Theme.of(context)
-                    .primaryTextTheme
-                    .displayLarge
-                    ?.copyWith(fontSize: 80, fontWeight: FontWeight.bold),
-              ),
+              const HeroText(text: "Create Room"),
               SizedBox(height: size.height * 0.08),
               CustomTextField(
                   controller: _nameController,
                   hintText: "Enter You Nickname",
                   fillColor: Theme.of(context).colorScheme.onInverseSurface),
               SizedBox(height: size.height * 0.05),
-              CustomButton(onTap: () {
-                _socketHelper.createRoom(_nameController.text);
-              }, text: "Create Room!")
+              CustomButton(
+                  onTap: () {
+                    _socketHelper.createRoom(_nameController.text);
+                  },
+                  text: "Create Room!")
             ],
           ),
         ),

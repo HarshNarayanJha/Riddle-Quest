@@ -24,6 +24,7 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
   void initState() {
     super.initState();
     _socketHelper.roomJoinedListener(context);
+    _socketHelper.updatePlayersListener(context);
     _socketHelper.errorOccurredListener(context);
   }
 
@@ -32,6 +33,11 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
     super.dispose();
     _nameController.dispose();
     _roomCodeController.dispose();
+
+    // UnListeners
+    _socketHelper.removeRoomJoinedListener(context);
+    _socketHelper.removeUpdatePlayersListener(context);
+    _socketHelper.removeErrorOccurredListener(context);
   }
 
   @override
