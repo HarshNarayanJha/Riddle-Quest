@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:riddle_quest_app/resources/socket_helper.dart';
 import 'package:riddle_quest_app/widgets/custom_button.dart';
 import 'package:riddle_quest_app/widgets/custom_text_field.dart';
+import 'package:riddle_quest_app/widgets/hero_text.dart';
 import 'package:riddle_quest_app/widgets/responsive.dart';
 import 'package:riddle_quest_app/widgets/riddle_quest_app_bar.dart';
 
@@ -16,6 +18,14 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _roomCodeController = TextEditingController();
+  final _socketHelper = SocketHelper();
+
+  @override
+  void initState() {
+    super.initState();
+    _socketHelper.roomJoinedListener(context);
+    _socketHelper.errorOccurredListener(context);
+  }
 
   @override
   void dispose() {
@@ -37,13 +47,7 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Join Room",
-                style: Theme.of(context)
-                    .primaryTextTheme
-                    .displayLarge
-                    ?.copyWith(fontSize: 80, fontWeight: FontWeight.bold),
-              ),
+              const HeroText(text: "Join Room"),
               SizedBox(height: size.height * 0.08),
               CustomTextField(
                   controller: _nameController,
@@ -55,7 +59,9 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
                   hintText: "Enter Room Code",
                   fillColor: Theme.of(context).colorScheme.onInverseSurface),
               SizedBox(height: size.height * 0.05),
-              CustomButton(onTap: () {}, text: "Join Room!")
+              CustomButton(onTap: () {
+                _socketHelper.joinRoom(_nameController.text, _roomCodeController.text);
+              }, text: "Join Room!")
             ],
           ),
         ),

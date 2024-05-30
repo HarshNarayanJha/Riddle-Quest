@@ -15,11 +15,13 @@ class CreateRoomPage extends StatefulWidget {
 
 class _CreateRoomPageState extends State<CreateRoomPage> {
   final TextEditingController _nameController = TextEditingController();
+  final _socketHelper = SocketHelper();
 
   @override
   void initState() {
     super.initState();
-    SocketHelper.roomCreatedListener(context);
+    _socketHelper.roomCreatedListener(context);
+    _socketHelper.errorOccurredListener(context);
   }
 
   @override
@@ -55,7 +57,7 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
                   fillColor: Theme.of(context).colorScheme.onInverseSurface),
               SizedBox(height: size.height * 0.05),
               CustomButton(onTap: () {
-                SocketHelper.createRoom(_nameController.text);
+                _socketHelper.createRoom(_nameController.text);
               }, text: "Create Room!")
             ],
           ),

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 class Responsive extends StatelessWidget {
   final Widget child;
-  const Responsive({super.key, required this.child});
+  final double maxWidth;
+  const Responsive({super.key, required this.child, this.maxWidth = 600});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 600),
+        constraints: BoxConstraints(maxWidth: maxWidth),
         child: child,
       ),
     );
