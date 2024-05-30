@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:riddle_quest_app/resources/socket_helper.dart';
 import 'package:riddle_quest_app/widgets/custom_button.dart';
 import 'package:riddle_quest_app/widgets/custom_text_field.dart';
 import 'package:riddle_quest_app/widgets/responsive.dart';
@@ -14,6 +15,12 @@ class CreateRoomPage extends StatefulWidget {
 
 class _CreateRoomPageState extends State<CreateRoomPage> {
   final TextEditingController _nameController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    SocketHelper.roomCreatedListener(context);
+  }
 
   @override
   void dispose() {
@@ -47,7 +54,9 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
                   hintText: "Enter You Nickname",
                   fillColor: Theme.of(context).colorScheme.onInverseSurface),
               SizedBox(height: size.height * 0.05),
-              CustomButton(onTap: () {}, text: "Create Room!")
+              CustomButton(onTap: () {
+                SocketHelper.createRoom(_nameController.text);
+              }, text: "Create Room!")
             ],
           ),
         ),

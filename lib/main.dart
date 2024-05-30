@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:riddle_quest_app/pages/create_room_page.dart';
+import 'package:riddle_quest_app/pages/game_page.dart';
 import 'package:riddle_quest_app/pages/home_page.dart';
 import 'package:riddle_quest_app/pages/join_room_page.dart';
 import 'package:riddle_quest_app/theme/theme.dart';
@@ -26,6 +27,7 @@ class RiddleQuest extends StatelessWidget {
         HomePage.routeName: (context) => const HomePage(),
         CreateRoomPage.routeName: (context) => const CreateRoomPage(),
         JoinRoomPage.routeName: (context) => const JoinRoomPage(),
+        GamePage.routeName: (context) => const GamePage(),
       },
       initialRoute: HomePage.routeName,
     );
