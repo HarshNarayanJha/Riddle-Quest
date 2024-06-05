@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:riddle_quest_app/pages/home_page.dart';
 import 'package:riddle_quest_app/provider/room_data_provider.dart';
 import 'package:riddle_quest_app/resources/socket_helper.dart';
 import 'package:riddle_quest_app/widgets/custom_button.dart';
@@ -87,7 +88,7 @@ class _LobbyPageState extends State<LobbyPage> {
         bool canPop = await _onBack(context, roomDataProvider);
         if (canPop) {
           if (context.mounted) {
-            Navigator.pop(context);
+            Navigator.of(context).popUntil(ModalRoute.withName(HomePage.routeName));
           }
         }
       },

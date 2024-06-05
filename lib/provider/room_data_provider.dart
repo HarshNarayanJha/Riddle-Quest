@@ -53,6 +53,7 @@ class RoomDataProvider extends ChangeNotifier {
 
   void updateReceivedRiddle(bool state) {
     _receivedRiddle = state;
+    notifyListeners();
   }
 
   void updateRiddleData(String itemName, String riddle) {

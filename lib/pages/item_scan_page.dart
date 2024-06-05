@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:riddle_quest_app/pages/home_page.dart';
 import 'package:riddle_quest_app/provider/room_data_provider.dart';
 import 'package:riddle_quest_app/resources/socket_helper.dart';
 import 'package:riddle_quest_app/widgets/custom_button.dart';
@@ -27,9 +28,9 @@ class _ItemScanPageState extends State<ItemScanPage> {
     super.initState();
     initCameras();
 
-    Provider.of<RoomDataProvider>(context).updateReceivedRiddle(true);
-
-    _socketHelper.scannedImageListener(context);
+    _socketHelper.leaveRoomListener(context);
+    _socketHelper.updatePlayersListener(context);
+    _socketHelper.updateRoomListener(context);
     _socketHelper.errorOccurredListener(context);
   }
 
@@ -38,6 +39,9 @@ class _ItemScanPageState extends State<ItemScanPage> {
     _socketHelper
         .destroyRoom(Provider.of<RoomDataProvider>(context).roomData['id']);
     _socketHelper.removeScannedImageListener();
+    _socketHelper.removeLeaveRoomListener();
+    _socketHelper.removeUpdatePlayersListener();
+    _socketHelper.removeUpdateRoomListener();
     _socketHelper.removeErrorOccurredListener();
     _cameraController.dispose();
     super.dispose();
@@ -51,6 +55,7 @@ class _ItemScanPageState extends State<ItemScanPage> {
     // print("############ Cameras: " + cameras.toList().toString());
     _cameraController = CameraController(cameras[0], ResolutionPreset.low);
     await _cameraController.initialize();
+    _socketHelper.scannedImageListener(context, _cameraController);
     // _cameraController.lockCaptureOrientation(DeviceOrientation.landscapeRight)
     if (!mounted) {
       return;
@@ -104,7 +109,8 @@ class _ItemScanPageState extends State<ItemScanPage> {
         bool canPop = await _onBack(context, roomDataProvider);
         if (canPop) {
           if (context.mounted) {
-            Navigator.pop(context);
+            Navigator.of(context)
+                .popUntil(ModalRoute.withName(HomePage.routeName));
           }
         }
       },
@@ -137,28 +143,58 @@ class _ItemScanPageState extends State<ItemScanPage> {
                           .copyWith(color: Colors.grey),
                     ),
                     SizedBox(height: size.height * 0.02),
-                    GestureDetector(
-                      onTap: (roomDataProvider.receivedRiddle) ? () async {
-                        XFile image = await _cameraController.takePicture();
-                        print("Took Picture $image");
-                        _socketHelper.scanImage(
-                            context,
-                            image,
-                            roomDataProvider.roomData['id'],
-                            roomDataProvider.didCreateRoom);
-                        // initCameras();
-                        // print(image.path);
-                        // _cameraController.resumePreview();
-                      } : null,
-                      child: (cameraEnabled)
-                          ? SquareCameraPreview(
-                              size: size, cameraController: _cameraController)
-                          : Container(
-                              width: size.width / 1.2,
-                              height: size.width / 1.2,
-                              decoration:
-                                  const BoxDecoration(color: Colors.black)),
-                    ),
+                    (roomDataProvider.myPlayer.imagesDone < 5)
+                        ? GestureDetector(
+                            onTap: (cameraEnabled &&
+                                    roomDataProvider.receivedRiddle)
+                                ? () async {
+                                    await _cameraController.pausePreview();
+                                    XFile image =
+                                        await _cameraController.takePicture();
+                                    print("Took Picture $image");
+                                    _socketHelper.scanImage(
+                                        // ignore: use_build_context_synchronously
+                                        context,
+                                        image,
+                                        roomDataProvider.roomData['id'],
+                                        roomDataProvider.didCreateRoom);
+                                  }
+                                : null,
+                            child: (cameraEnabled)
+                                ? Stack(
+                                    // fit: StackFit.expand,
+                                    alignment: Alignment.center,
+                                    children: [
+                                      SquareCameraPreview(
+                                          size: size,
+                                          cameraController: _cameraController),
+                                      AnimatedOpacity(
+                                        opacity: (roomDataProvider.receivedRiddle) ? 0.0 : 0.5,
+                                        duration: const Duration(milliseconds: 250),
+                                        child: Container(
+                                            width: size.width / 1.2,
+                                            height: size.width / 1.2,
+                                            decoration: const BoxDecoration(
+                                                color: Colors.black)),
+                                      ),
+                                    ],
+                                  )
+                                : Container(
+                                    width: size.width / 1.2,
+                                    height: size.width / 1.2,
+                                    decoration: const BoxDecoration(
+                                        color: Colors.black)),
+                          )
+                        : Container(
+                            width: size.width / 1.2,
+                            height: size.width / 1.2,
+                            decoration:
+                                const BoxDecoration(color: Colors.black),
+                            child: const Center(
+                              child: Text(
+                                  "All Images Done. Click on Next to Continue!"),
+                            ),
+                          ),
                     SizedBox(height: size.height * 0.04),
                     Text(
                       roomDataProvider.currentItemName,
@@ -170,7 +206,10 @@ class _ItemScanPageState extends State<ItemScanPage> {
                         textAlign: TextAlign.center),
                     SizedBox(height: size.height * 0.04),
                     CustomButton(
-                        onTap: (roomDataProvider.myPlayer.imagesDone == 5) ? () {} : null, text: "Next"),
+                        onTap: (roomDataProvider.myPlayer.imagesDone == 5)
+                            ? () {}
+                            : null,
+                        text: "Next"),
                   ],
                 ),
               )),

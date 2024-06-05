@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -72,7 +70,7 @@ class SocketHelper {
   void roomCreatedListener(BuildContext context) {
     // print("Listening for roomCreated");
     _socketClient.on('roomCreated', (room) {
-      print("Created: " + room);
+      print("Created: $room");
       Provider.of<RoomDataProvider>(context, listen: false)
           .updateRoomData(room);
       Navigator.pushNamed(context, LobbyPage.routeName);
@@ -82,7 +80,7 @@ class SocketHelper {
   void roomJoinedListener(BuildContext context) {
     // print("Listening for roomJoined");
     _socketClient.on('roomJoined', (room) {
-      print("Joined: " + room);
+      print("Joined: $room");
       Provider.of<RoomDataProvider>(context, listen: false)
           .updateRoomData(room);
       Navigator.pushNamed(context, LobbyPage.routeName);
@@ -92,7 +90,7 @@ class SocketHelper {
   void errorOccurredListener(BuildContext context) {
     // print("Listening for errorOccurred");
     _socketClient.on('errorOccurred', (error) {
-      print(error);
+      print("Error: $error");
       showSnackBar(context, error);
     });
   }
@@ -100,6 +98,7 @@ class SocketHelper {
   void updatePlayersListener(BuildContext context) {
     // print("Listening for updatePlayers");
     _socketClient.on('updatePlayers', (players) {
+      print("Players: $players");
       Provider.of<RoomDataProvider>(context, listen: false)
           .updatePlayer1(players[0]);
       Provider.of<RoomDataProvider>(context, listen: false)
@@ -110,6 +109,7 @@ class SocketHelper {
   void updateRoomListener(BuildContext context) {
     // print("Listening for updateRoom");
     _socketClient.on('updateRoom', (room) {
+      print("Room: $room");
       Provider.of<RoomDataProvider>(context, listen: false)
           .updateRoomData(room);
     });
@@ -117,7 +117,7 @@ class SocketHelper {
 
   void leaveRoomListener(BuildContext context) {
     _socketClient.on('leaveRoom', (room) {
-      print("delete room leave");
+      print("Room Leave $room");
       Navigator.of(context).popUntil(ModalRoute.withName(HomePage.routeName));
       Navigator.of(context).pushReplacementNamed(HomePage.routeName);
     });
@@ -125,15 +125,17 @@ class SocketHelper {
 
   void scanStartedListener(BuildContext context) {
     _socketClient.on('scanStarted', (room) {
+      print("Scan Started $room");
       Provider.of<RoomDataProvider>(context, listen: false)
           .updateRoomData(room);
       Navigator.pushNamed(context, ItemScanPage.routeName);
     });
   }
 
-  void scannedImageListener(BuildContext context) {
+  void scannedImageListener(BuildContext context, CameraController cameraController) {
     _socketClient.on('scannedImage', (data) {
-      print("scanned: " + data);
+      cameraController.resumePreview();
+      print("Scanned: $data");
       Provider.of<RoomDataProvider>(context, listen: false).updateReceivedRiddle(true);
       Provider.of<RoomDataProvider>(context, listen: false)
           .updatePlayer1(data['players'][0]);

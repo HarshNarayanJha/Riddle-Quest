@@ -46,29 +46,33 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
 
     return Scaffold(
       appBar: const RiddleQuestAppBar(),
-      body: Responsive(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const HeroText(text: "Join Room"),
-              SizedBox(height: size.height * 0.08),
-              CustomTextField(
-                  controller: _nameController,
-                  hintText: "Enter Your Nickname",
-                  fillColor: Theme.of(context).colorScheme.onInverseSurface),
-              SizedBox(height: size.height * 0.05),
-              CustomTextField(
-                  controller: _roomCodeController,
-                  hintText: "Enter Room Code",
-                  fillColor: Theme.of(context).colorScheme.onInverseSurface),
-              SizedBox(height: size.height * 0.05),
-              CustomButton(onTap: () {
-                _socketHelper.joinRoom(context, _nameController.text, _roomCodeController.text);
-              }, text: "Join Room!")
-            ],
+      body: SingleChildScrollView(
+        child: Responsive(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: size.height * 0.08),
+                const HeroText(text: "Join Room"),
+                SizedBox(height: size.height * 0.08),
+                CustomTextField(
+                    controller: _nameController,
+                    hintText: "Enter Your Nickname",
+                    fillColor: Theme.of(context).colorScheme.onInverseSurface),
+                SizedBox(height: size.height * 0.05),
+                CustomTextField(
+                    controller: _roomCodeController,
+                    hintText: "Enter Room Code",
+                    fillColor: Theme.of(context).colorScheme.onInverseSurface),
+                SizedBox(height: size.height * 0.05),
+                CustomButton(onTap: () {
+                  _socketHelper.joinRoom(context, _nameController.text, _roomCodeController.text);
+                }, text: "Join Room!"),
+                SizedBox(height: size.height * 0.1),
+              ],
+            ),
           ),
         ),
       ),
