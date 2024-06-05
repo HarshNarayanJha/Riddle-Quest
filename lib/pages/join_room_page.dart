@@ -35,9 +35,9 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
     _roomCodeController.dispose();
 
     // UnListeners
-    _socketHelper.removeRoomJoinedListener(context);
-    _socketHelper.removeUpdatePlayersListener(context);
-    _socketHelper.removeErrorOccurredListener(context);
+    _socketHelper.removeRoomJoinedListener();
+    _socketHelper.removeUpdatePlayersListener();
+    _socketHelper.removeErrorOccurredListener();
   }
 
   @override
@@ -57,7 +57,7 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
               SizedBox(height: size.height * 0.08),
               CustomTextField(
                   controller: _nameController,
-                  hintText: "Enter You Nickname",
+                  hintText: "Enter Your Nickname",
                   fillColor: Theme.of(context).colorScheme.onInverseSurface),
               SizedBox(height: size.height * 0.05),
               CustomTextField(
@@ -66,7 +66,7 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
                   fillColor: Theme.of(context).colorScheme.onInverseSurface),
               SizedBox(height: size.height * 0.05),
               CustomButton(onTap: () {
-                _socketHelper.joinRoom(_nameController.text, _roomCodeController.text);
+                _socketHelper.joinRoom(context, _nameController.text, _roomCodeController.text);
               }, text: "Join Room!")
             ],
           ),

@@ -32,8 +32,8 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
 
     // UnListeners
 
-    _socketHelper.removeRoomCreatedListener(context);
-    _socketHelper.removeErrorOccurredListener(context);
+    _socketHelper.removeRoomCreatedListener();
+    _socketHelper.removeErrorOccurredListener();
   }
 
   @override
@@ -53,12 +53,12 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
               SizedBox(height: size.height * 0.08),
               CustomTextField(
                   controller: _nameController,
-                  hintText: "Enter You Nickname",
+                  hintText: "Enter Your Nickname",
                   fillColor: Theme.of(context).colorScheme.onInverseSurface),
               SizedBox(height: size.height * 0.05),
               CustomButton(
                   onTap: () {
-                    _socketHelper.createRoom(_nameController.text);
+                    _socketHelper.createRoom(context, _nameController.text);
                   },
                   text: "Create Room!")
             ],

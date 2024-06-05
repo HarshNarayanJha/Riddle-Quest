@@ -44,7 +44,7 @@ class WaitingRoom extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.08),
           Text(
-            "1. ${roomDataProvider.roomData['players'][0]['nickname']}",
+            "1. ${roomDataProvider.roomData['playerRoom']['nickname']}",
             style: Theme.of(context).textTheme.labelLarge,
           ),
           Text(

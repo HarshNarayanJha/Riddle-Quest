@@ -6,9 +6,18 @@ class SocketClient {
   static SocketClient? _instance;
 
   SocketClient._internal() {
-    socket = IO.io('http://192.168.104.94:3000',
-        IO.OptionBuilder().setTransports(['websocket']).disableAutoConnect().build());
+    socket = IO.io(
+        'http://192.168.1.14:3000',
+        IO.OptionBuilder()
+            .setTransports(['websocket'])
+            .disableAutoConnect()
+            .build());
     socket?.connect();
+
+    socket?.onError((data) => print("Error --> $data"));
+    socket?.onConnecting((data) => print("Connecting --> $data"));
+    socket?.onConnectError((data) => print("Connect Error  --> $data"));
+    socket?.onConnect((data) => print("Connect --> $data"));
   }
 
   static SocketClient get instance {
